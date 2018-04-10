@@ -5,7 +5,7 @@ ENV VERBOS=true
 ENV JEKYLL_DEBUG=true
 WORKDIR /srv/jekyll
 COPY . /srv/jekyll 
-RUN  chown -R jekyll.jekyll /srv/jekyll
+RUN  chown -R jekyll.jekyll /srv/jekyll \
       && bundle update --jobs 15
 
 FROM jekyll/builder as builder
@@ -22,7 +22,7 @@ RUN cd /srv/jekyll \
        && ls -la /srv/jekyll \
        && sed -i 's/bin\\/bash/bin\\/bash \\-x/g' /usr/jekyll/bin/entrypoint \
        && sed -i 's/bin\\/sh/bin\\/sh \\-x/g' /usr/jekyll/bin/jekyll \
-       && /usr/jekyll/bin/entrypoint jekyll build -s /srv/jekyll -d /srv/jekyll/_site$@ \
+       && /usr/jekyll/bin/entrypoint jekyll build -s /srv/jekyll -d /srv/jekyll/_site \
        && mkdir /data \
        && cp -av /srv/jekyll/* /data \      
        && cp -av /srv/jekyll/.??* /data
