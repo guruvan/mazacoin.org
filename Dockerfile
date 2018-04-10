@@ -20,8 +20,8 @@ WORKDIR /srv/jekyll
 RUN cd /srv/jekyll \
        && chown -R jekyll.jekyll /srv/jekyll \
        && ls -la /srv/jekyll \
-       && sed -i 's/bin\\/bash/bin\\/bash \\-x/g' /usr/jekyll/bin/entrypoint \
-       && sed -i 's/bin\\/sh/bin\\/sh \\-x/g' /usr/jekyll/bin/jekyll \
+       && sed -i 's/bin\/bash/bin\/bash\ \-x/g'/usr/jekyll/bin/entrypoint \
+       && sed -i 's/bin\/sh/bin\/sh\ \-x/g' /usr/jekyll/bin/jekyll \
        && /usr/jekyll/bin/entrypoint jekyll build -s /srv/jekyll -d /srv/jekyll/_site \
        && mkdir /data \
        && cp -av /srv/jekyll/* /data \      
