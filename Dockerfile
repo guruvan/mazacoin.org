@@ -31,5 +31,5 @@ FROM nginx:stable-alpine
 COPY --from=builder /data/ /var/www/mazacoin.org/
 COPY ./nginx/default-backend.conf /etc/nginx/sites-enabled/default.conf
 RUN  rm /etc/nginx/conf.d/default.conf \
-      && sed -i '32i\\    include /etc/nginx/sites-enabled/*.conf\\;' /etc/nginx/nginx.conf
+      && sed -i '32i\\    include /etc/nginx/sites-enabled/*.conf\;' /etc/nginx/nginx.conf
 RUN  chown -R nginx /var/www/mazacoin.org
