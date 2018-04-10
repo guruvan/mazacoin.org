@@ -1,25 +1,26 @@
-FROM jekyll/builder as bundler
-ENV JEKYLL_UID=1000
-ENV JEKYLL_GID=1000
-ENV VERBOS=true
-ENV JEKYLL_DEBUG=true
-WORKDIR /srv/jekyll
-COPY . /srv/jekyll 
-RUN  chown -R jekyll.jekyll /srv/jekyll \
-      && bundle update --jobs 15
+#FROM jekyll/builder as bundler
+#ENV JEKYLL_UID=1000
+#ENV JEKYLL_GID=1000
+#ENV VERBOS=true
+#ENV JEKYLL_DEBUG=true
+#WORKDIR /srv/jekyll
+#COPY . /srv/jekyll 
+#RUN  chown -R jekyll.jekyll /srv/jekyll \
+#      && bundle update --jobs 15
 
 FROM jekyll/builder as builder
 ENV JEKYLL_UID=1000
 ENV JEKYLL_GID=1000
 ENV VERBOSE=true
 ENV JEKYLL_DEBUG=true
-COPY --from=bundler /srv/jekyll/ /srv/jekyll
-COPY --from=bundler /usr/local/bundle/ /usr/local/bundle
-#COPY . /srv/jekyll 
+#COPY --from=bundler /srv/jekyll/ /srv/jekyll
+#COPY --from=bundler /usr/local/bundle/ /usr/local/bundle
+COPY . /srv/jekyll 
 WORKDIR /srv/jekyll
 RUN cd /srv/jekyll \
        && chown -R jekyll.jekyll /srv/jekyll \
        && ls -la /srv/jekyll \
+       && /usr/jekyll/bin/entrypoint bundle update \
        && /usr/jekyll/bin/entrypoint jekyll build -s /srv/jekyll -d /srv/jekyll/_site \
        && mkdir /data \
        && cp -av /srv/jekyll/* /data \      
