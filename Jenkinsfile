@@ -52,7 +52,7 @@ volumes: [
     }
     stage('Run kubectl') {
       container('kubectl') {
-        sh "kubectl get pods"
+        sh "kubectl get pods -n maza-web"
       }
     }
     stage('Run helm') {
