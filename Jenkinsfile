@@ -60,6 +60,7 @@ volumes: [
       withCredentials([string(credentialsId: 'c40d0d5f-875b-4dfe-b3c0-4374606f635e', variable: 'KUBECTL_TOKEN')]) {
         sh """
           kubectl --token $KUBECTL_TOKEN get pods -n maza-web
+          kubectl --token $KUBECTL_TOKEN create -f k8s/dev/mazaweb.yaml
           """
       }
       }
