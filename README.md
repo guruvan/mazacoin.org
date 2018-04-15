@@ -27,8 +27,16 @@ See the wiki for instructions to push the site to IPFS, publish an IPNS link, co
 
 
 ## Automated Builds 
+
+This site is built by dockerhub, and the [MAZAnetwork jenkins cluster](https://jenkins.maza.network)
 You can find automated builds of this image in a few repos on dockerhub
 guruvan/mazacoin-org
+  Several tags are built by jenkins 
+    - guruvan/mazacoin-org:dev
+    - guruvan/mazacoin-org:latest
+    - guruvan/mazacoin-org:{GIT_COMMIT} 
+  Additional tags are built by dockerhub
+    - guruvan/mazacoin-org:develop
 maza/maza-network
 
 Multiple pipelines produce this site, and have individual tags. 
