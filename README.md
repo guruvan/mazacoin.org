@@ -37,7 +37,7 @@ guruvan/mazacoin-org
     - guruvan/mazacoin-org:{GIT_COMMIT} 
   Additional tags are built by dockerhub
     - guruvan/mazacoin-org:develop
-maza/maza-network
+
 
 Multiple pipelines produce this site, and have individual tags. 
 
