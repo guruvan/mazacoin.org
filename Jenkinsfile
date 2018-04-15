@@ -46,7 +46,8 @@ volumes: [
             docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}
             docker build -t guruvan/mazacoin-org:${shortGitCommit} .
             docker tag guruvan/mazacoin-org:${shortGitCommit} guruvan/mazacoin-org:dev
-            docker push namespace/my-image:${gitCommit}
+            docker push guruvan/mazacoin-org:${shortGitCommit}
+            docker push guruvan/mazacoin-org:dev
             """
         }
       }
