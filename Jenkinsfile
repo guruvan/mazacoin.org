@@ -53,6 +53,8 @@ volumes: [
     stage('Run kubectl') {
       container('kubectl') {
         sh """
+          kubectl config current-context
+          kubectl config get-contexts
           kubectl get pods -n maza-web
           """
       }
