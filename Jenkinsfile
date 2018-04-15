@@ -50,18 +50,18 @@ volumes: [
         }
       }
     }
-    stage('Run helm') {
-      container('helm') {
-        sh "helm list"
-      }
-    }
+//    stage('Run helm') {
+//      container('helm') {
+//        sh "helm list"
+//      }
+//    }
     stage('Run kubectl') {
       container('kubectl') {
+      withCredentials([string(credentialsId: 'c40d0d5f-875b-4dfe-b3c0-4374606f635e', variable: 'KUBECTL_TOKEN')]) {
         sh """
-          kubectl config current-context
-          kubectl config get-contexts
-          kubectl get pods -n maza-web
+          kubectl --token $KUBECTL_TOKEN get pods -n maza-web
           """
+      }
       }
     }
   }
