@@ -50,6 +50,11 @@ volumes: [
         }
       }
     }
+    stage('Run helm') {
+      container('helm') {
+        sh "helm list"
+      }
+    }
     stage('Run kubectl') {
       container('kubectl') {
         sh """
@@ -57,11 +62,6 @@ volumes: [
           kubectl config get-contexts
           kubectl get pods -n maza-web
           """
-      }
-    }
-    stage('Run helm') {
-      container('helm') {
-        sh "helm list"
       }
     }
   }
