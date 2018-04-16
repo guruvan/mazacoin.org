@@ -32,6 +32,7 @@ volumes: [
              pwd
              env
              ls -la
+             whoami 
              bundle update
              rake test
           """
