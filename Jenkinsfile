@@ -24,7 +24,7 @@ volumes: [
  // workspace inside the jekyll container, so we copy the workdir over to /srv/jekyll
  // https://issues.jenkins-ci.org/browse/JENKINS-41418
     stage('Test') {
-    if (ghprbSourceBranch == 'origin/master') {
+    if (gitBranch == 'origin/master') { 
       try {
         container('jekyll') {
           sh """
@@ -59,7 +59,7 @@ volumes: [
               }
           }
       }
-      if (ghprbSourceBranch	 == "origin/master" ) {
+      if (ghprbSourceBranch == "origin/master" ) {
           container('docker') {
             withCredentials([[$class: 'UsernamePasswordMultiBinding',
               credentialsId: 'dockerhub',
@@ -68,9 +68,9 @@ volumes: [
                 sh """
                   docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}
                   docker build -t guruvan/mazacoin-org:${shortGitCommit} .
-                  docker tag guruvan/mazacoin-org:${shortGitCommit} guruvan/mazacoin-org:dev
+                  docker tag guruvan/mazacoin-org:${shortGitCommit} guruvan/mazacoin-org:latest
                   docker push guruvan/mazacoin-org:${shortGitCommit}
-                  docker push guruvan/mazacoin-org:dev
+                  docker push guruvan/mazacoin-org:latest
                 """
               }
             }
