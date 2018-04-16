@@ -14,16 +14,16 @@ volumes: [
     def gitCommit = myRepo.GIT_COMMIT
     def gitBranch = myRepo.GIT_BRANCH
     def shortGitCommit = "${gitCommit[0..10]}"
-    def git_branch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true)
+  //  def git_branch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true)
     def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
-    sh(script: "echo \"Running ${env.BUILD_ID} on ${env.JENKINS_URL}\"", returnStdout: true)
+  //  sh(script: "echo \"Running ${env.BUILD_ID} on ${env.JENKINS_URL}\"", returnStdout: true)
     sh(script: "echo \"Building gitBranch ${gitBranch} env.gitBranch ${env.gitBranch} GIT_BRANCH ${env.GIT_BRANCH} commit ${gitCommit}\"",returnStdout: true)
-    sh(script: "echo \"Building ${BRANCH_NAME} BRANCH_NAME ${env.BRANCH_NAME} commit ${gitCommit}\"",returnStdout: true)
+  //  sh(script: "echo \"Building ${BRANCH_NAME} BRANCH_NAME ${env.BRANCH_NAME} commit ${gitCommit}\"",returnStdout: true)
  // issue with UID/GID between containers prevents us from writing to the 
  // workspace inside the jekyll container, so we copy the workdir over to /srv/jekyll
  // https://issues.jenkins-ci.org/browse/JENKINS-41418
     stage('Test') {
-    if (env.git_branch == 'origin/master') {
+    if (gitBranch == 'origin/master') {
       try {
         container('jekyll') {
           sh """
@@ -45,7 +45,7 @@ volumes: [
       sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
       sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD')
       sh(script: "echo \"Building ${env.GIT_BRANCH} commit ${gitCommit}\"",returnStdout: true)
-      if (env.git_branch == 'develop') {
+      if (gitBranch == 'origin/develop') {
           container('docker') {
             withCredentials([[$class: 'UsernamePasswordMultiBinding',
               credentialsId: 'dockerhub',
@@ -61,7 +61,7 @@ volumes: [
               }
           }
       }
-      if ( "${gitBranch}" == "master" ) {
+      if (gitBranch == "origin/master" ) {
           container('docker') {
             withCredentials([[$class: 'UsernamePasswordMultiBinding',
               credentialsId: 'dockerhub',
@@ -84,8 +84,8 @@ volumes: [
 //      }
 //    }
     stage('Deploy Pod') {
-      switch(env.gitBranch) {
-        case "develop":
+      switch(gitBranch) {
+        case "origin/develop":
           container('kubectl') {
           withCredentials([string(credentialsId: 'c40d0d5f-875b-4dfe-b3c0-4374606f635e', variable: 'KUBECTL_TOKEN')]) {
             sh """
@@ -95,7 +95,7 @@ volumes: [
             """
           }
           }
-        case "master":
+        case "origin/master":
           container('kubectl') {
           withCredentials([string(credentialsId: 'c40d0d5f-875b-4dfe-b3c0-4374606f635e', variable: 'KUBECTL_TOKEN')]) {
             sh """
