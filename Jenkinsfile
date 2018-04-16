@@ -40,8 +40,7 @@ volumes: [
     stage('Deploy Docker Images to Registry') {
       sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
       GIT_BRANCH = 'origin/' + sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-      sh(echo "${GIT_BRANCH}")
-      if (GIT_BRANCH == 'origin/develop') {
+      if (env.GIT_BRANCH == 'origin/develop') {
           container('docker') {
             withCredentials([[$class: 'UsernamePasswordMultiBinding',
               credentialsId: 'dockerhub',
