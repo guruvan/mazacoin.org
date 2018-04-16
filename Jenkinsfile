@@ -24,7 +24,7 @@ volumes: [
  // workspace inside the jekyll container, so we copy the workdir over to /srv/jekyll
  // https://issues.jenkins-ci.org/browse/JENKINS-41418
     stage('Test') {
-    if (gitBranch == 'origin/master') {
+    if (ghprbSourceBranch	 == 'origin/master') {
       try {
         container('jekyll') {
           sh """
