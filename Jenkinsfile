@@ -23,8 +23,12 @@ volumes: [
              pwd
              env
              ls -la
+             # should need this but not clear why we can't update the Gemfile.lock
+             chown -R 1000.1000 /srv/jekyll
              bundle update
              rake test
+             chown -R 10000.10000 /srv/jekyll
+            
           """
         }
       }
