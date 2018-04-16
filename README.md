@@ -45,7 +45,7 @@ guruvan/mazacoin-org
 
 Multiple pipelines produce this site, and have individual tags. 
 
-### Developing
+## Developing
 
 The easiest way to make changes is probably to follow the above process, but it may be slow if you're making several changes at once 
 Alternatively, you can run the jekyll/builder manually, and have jekyll serve the site and watch for your changes 
@@ -54,8 +54,21 @@ Alternatively, you can run the jekyll/builder manually, and have jekyll serve th
   git clone https://github.com/mazanetwork/maza.network
   cd maza.network
   sudo chown -R 1000:1000 ./
-  docker run -it --rm -v $(pwd):/srv/jekyll -v $(pwd)/bundle:/usr/loca/bundle jekyll/builder bundle update
-  docker run -it --rm -v $(pwd):/srv/jekyll -v $(pwd)/bundle:/usr/loca/bundle -p 80:8080 jekyll/builder jekyll  serve -P 8080
+  docker run -it --rm -v $(pwd):/srv/jekyll -v $(pwd)/bundle:/usr/local/bundle jekyll/builder bundle update
+  docker run -it --rm -v $(pwd):/srv/jekyll -v $(pwd)/bundle:/usr/local/bundle -p 80:8080 jekyll/builder jekyll  serve -P 8080
   ```
 After running the ```bundle update``` step, you only need to run the ```jekyll serve``` as long you keep the Gemfile.lock and the bundle directory (which docker will create for you) 
 Don't edit anything in the ```_site/``` directory as this is overwritten each time the site is processed. 
+
+## Testing & Validation
+ Automated builds will run html-proofer tests from the Rakefile provided
+ To run them yourself
+   ``` 
+  git clone https://github.com/mazanetwork/maza.network
+  cd maza.network
+  sudo chown -R 1000:1000 ./
+  docker run -it --rm -v $(pwd):/srv/jekyll -v $(pwd)/bundle:/usr/local/bundle jekyll/builder bundle update
+  docker run -it --rm -v $(pwd):/srv/jekyll -v $(pwd)/bundle:/usr/local/bundle jekyll/builder rake test
+  ```
+ 
+ 
