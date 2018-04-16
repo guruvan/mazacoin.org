@@ -9,7 +9,7 @@ podTemplate(label: label, containers: [
     envVars: [
       envVar(key: 'JEKYLL_UID', value: '10000'),
       envVar(key: 'JEKYLL_GID', value: '10000')
-    ]),
+    ]
   ),
   containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
   containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl:v1.8.8', command: 'cat', ttyEnabled: true),
