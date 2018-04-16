@@ -10,6 +10,8 @@ submit their work as a Pull Request.
  - Listings of Exchanges, Wallets, Service Providers are accepted
     - criteria is not yet developed for inclusion in lists 
  - Static content only - html, markdown etc. (no Javascript, PHP, etc)
+#### Please read the README.md for additional information on developing with jekyll
+
 
 ## Procedure 
 ### basic master-develop workflow
