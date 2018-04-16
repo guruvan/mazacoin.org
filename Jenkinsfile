@@ -21,6 +21,7 @@ volumes: [
  // workspace inside the jekyll container, so we copy the workdir over to /srv/jekyll
  // https://issues.jenkins-ci.org/browse/JENKINS-41418
     stage('Test') {
+    if (env.GIT_BRANCH == 'origin/master') {
       try {
         container('jekyll') {
           sh """
@@ -36,6 +37,7 @@ volumes: [
         println "Failed to test - ${currentBuild.fullDisplayName}"
         throw(exc)
       }
+    }
     }
     stage('Deploy Docker Images to Registry') {
       sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
