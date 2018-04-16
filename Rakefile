@@ -1,10 +1,14 @@
 require 'html-proofer'
-
+# Lots of checks are disabled for pipeline development
+# set check_html to true, 
+# and remore ignores, 
+# set report_* to true
+# set empty_alt_ignore to true
 task :test do
   sh "bundle exec jekyll build"
   options = { 
     :assume_extension => true,
-    :check_html => true, 
+    :check_html => false, 
     :validation => { 
       :report_script_embeds => false,
       :report_invalid_tags => false,
@@ -13,9 +17,7 @@ task :test do
     :url_ignore => [ 
       "/appstore/",
       "/panoramio/",
-      "/theme",
-      "/ipfs/QmeFphaDUMjMhqih5w54g5mvqKzNMibPJJ8DNehhWtaVME",
-      "/exchange/MZC/BTC" ],
+      "/theme/" ],
     :internal_domains => [ "mazacoin.org" ],
     :allow_hash_href => true,
     :empty_alt_ignore => true }
