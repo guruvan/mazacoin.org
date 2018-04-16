@@ -8,7 +8,7 @@ The simplest way to build the site is with docker. A ```Dockerfile``` is include
 The included ```Dockerfile``` will use the ```jekyll/builder``` docker image to process the site, and then install the site 
 to a new image based on ```nginx:stable-alpine``` 
 
-Files in the new image are stored in ```/var/www/mazacoin.org``` 
+Files in the new image are stored inside the docker image in  ```/var/www/mazacoin.org``` 
 The live site is in ```/var/www/mazacoin.org/_site```
 
  ```
@@ -17,7 +17,11 @@ The live site is in ```/var/www/mazacoin.org/_site```
  docker build -t username/mazacoin-org
  docker run -d -p 80:80 username/mazacoin-org
  ```
- 
+ You can then test your site by visiting 
+  ```
+  http://docker-host-IP-address-or-dns-hostname
+  ```
+  
  The configuration provided for nginx is exceptionally simple, suited for local testing or for the backend of a reverse-proxy configuration
 
 ## IPFS
