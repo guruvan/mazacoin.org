@@ -19,10 +19,8 @@ volumes: [
       try {
         container('docker') {
           sh """
-            pwd
-            echo "GIT_BRANCH=${gitBranch}" >> /etc/environment
-            echo "GIT_COMMIT=${gitCommit}" >> /etc/environment
-            test -f Dockerfile
+            docker run -it --rm -v $(pwd):/srv/jekyll bundle update
+            docker run -it --rm -v $(pwd):/srv/jekyll rake test
             """
         }
       }
@@ -33,7 +31,12 @@ volumes: [
     }
     stage('Build') {
       container('docker') {
-        sh "docker images"
+        sh """
+           echo "GIT_BRANCH=${gitBranch}" >> /etc/environment
+           echo "GIT_COMMIT=${gitCommit}" >> /etc/environment
+           test -f Dockerfile
+           docker images
+        """
       }
     }
     stage('Create Docker images') {
