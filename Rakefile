@@ -13,8 +13,9 @@ task :test do
     :url_ignore => [ 
       "/appstore/",
       "/panoramio/",
-      "https://mazacoin.org/ipfs/QmeFphaDUMjMhqih5w54g5mvqKzNMibPJJ8DNehhWtaVME",
-      "https://www.coingather.com/exchange/MZC/BTC" ],
+      "/theme",
+      "/ipfs/QmeFphaDUMjMhqih5w54g5mvqKzNMibPJJ8DNehhWtaVME",
+      "/exchange/MZC/BTC" ],
     :internal_domains => [ "mazacoin.org" ],
     :allow_hash_href => true,
     :empty_alt_ignore => true }
