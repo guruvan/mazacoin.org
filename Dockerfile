@@ -1,13 +1,3 @@
-#FROM jekyll/builder as bundler
-#ENV JEKYLL_UID=1000
-#ENV JEKYLL_GID=1000
-#ENV VERBOS=true
-#ENV JEKYLL_DEBUG=true
-#WORKDIR /srv/jekyll
-#COPY . /srv/jekyll 
-#RUN  chown -R jekyll.jekyll /srv/jekyll \
-#      && bundle update --jobs 15
-
 FROM jekyll/builder as builder
 ENV JEKYLL_UID=1000
 ENV JEKYLL_GID=1000
