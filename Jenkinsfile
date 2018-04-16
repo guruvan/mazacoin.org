@@ -15,8 +15,8 @@ volumes: [
     def gitBranch = myRepo.GIT_BRANCH
     def shortGitCommit = "${gitCommit[0..10]}"
     def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
-    sh(echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}")
-    sh(echo "Building ${env.GIT_BRANCH} commit ${gitCommit}")
+    sh(script: "echo \"Running ${env.BUILD_ID} on ${env.JENKINS_URL}\"", returnStdout: true)
+    echo "Building ${env.GIT_BRANCH} commit ${gitCommit}"
  // issue with UID/GID between containers prevents us from writing to the 
  // workspace inside the jekyll container, so we copy the workdir over to /srv/jekyll
  // https://issues.jenkins-ci.org/browse/JENKINS-41418
