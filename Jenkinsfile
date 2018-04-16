@@ -51,8 +51,9 @@ volumes: [
       } 
     }
     }
+    if (prDetect == false) {
     stage('Deploy Docker Images to Registry') {
-      if (ghprbSourceBranch	 == 'origin/develop') {
+      if (gitBranch	 == 'origin/develop') {
           container('docker') {
             withCredentials([[$class: 'UsernamePasswordMultiBinding',
               credentialsId: 'dockerhub',
@@ -113,6 +114,7 @@ volumes: [
           }
           }        
       }
+    }
     }
 }
 }
