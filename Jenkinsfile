@@ -53,6 +53,7 @@ volumes: [
                 """
               }
           }
+      }
       if (env.gitBranch == "master" ) {
           container('docker') {
             withCredentials([[$class: 'UsernamePasswordMultiBinding',
