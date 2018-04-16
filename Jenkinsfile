@@ -19,8 +19,8 @@ volumes: [
       try {
         container('docker') {
           sh """
-             docker run --rm -v ${WORKSPACE}:/srv/jekyll bundle update
-             docker run --rm -v ${WORKSPACE}:/srv/jekyll rake test
+             docker run --rm -v ${WORKSPACE}:/srv/jekyll jekyll/builder bundle update
+             docker run --rm -v ${WORKSPACE}:/srv/jekyll jekyll/builder rake test
           """
         }
       }
