@@ -19,6 +19,8 @@ volumes: [
       try {
         container('docker') {
           sh """
+             pwd
+             env
              docker run --rm -v ${WORKSPACE}:/srv/jekyll jekyll/builder bundle update
              docker run --rm -v ${WORKSPACE}:/srv/jekyll jekyll/builder rake test
           """
