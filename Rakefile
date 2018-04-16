@@ -7,7 +7,7 @@ task :test do
     :check_html => true,
     :check_favicon => true,
     :url_ignore => [ "/appstore/", "/panoramio/" ],
-    :file_ignore => [ *embed* ],
+    :file_ignore => [ "/embed/" ],
     :internal_domains => [ "mazacoin.org" ],
     :allow_hash_href => true,
     :empty_alt_ignore => true }
