@@ -35,30 +35,38 @@ volumes: [
         throw(exc)
       }
     }
-    stage('Build') {
-      container('docker') {
-        sh """
-           echo "GIT_BRANCH=${gitBranch}" >> /etc/environment
-           echo "GIT_COMMIT=${gitCommit}" >> /etc/environment
-           test -f Dockerfile
-           docker images
-        """
-      }
-    }
-    stage('Create Docker images') {
-      container('docker') {
-        withCredentials([[$class: 'UsernamePasswordMultiBinding',
-          credentialsId: 'dockerhub',
-          usernameVariable: 'DOCKER_HUB_USER',
-          passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
-          sh """
-            docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}
-            docker build -t guruvan/mazacoin-org:${shortGitCommit} .
-            docker tag guruvan/mazacoin-org:${shortGitCommit} guruvan/mazacoin-org:dev
-            docker push guruvan/mazacoin-org:${shortGitCommit}
-            docker push guruvan/mazacoin-org:dev
-            """
-        }
+    stage('Deploy Docker Images to Registry') {
+      switch (env.BRANCH_NAME) {
+        case "develop":
+          container('docker') {
+            withCredentials([[$class: 'UsernamePasswordMultiBinding',
+              credentialsId: 'dockerhub',
+              usernameVariable: 'DOCKER_HUB_USER',
+              passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
+                sh """
+                  docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}
+                  docker build -t guruvan/mazacoin-org:${shortGitCommit} .
+                  docker tag guruvan/mazacoin-org:${shortGitCommit} guruvan/mazacoin-org:dev
+                  docker push guruvan/mazacoin-org:${shortGitCommit}
+                  docker push guruvan/mazacoin-org:dev
+                """
+              }
+          }
+        case "master":
+          container('docker') {
+            withCredentials([[$class: 'UsernamePasswordMultiBinding',
+              credentialsId: 'dockerhub',
+              usernameVariable: 'DOCKER_HUB_USER',
+              passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
+                sh """
+                  docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}
+                  docker build -t guruvan/mazacoin-org:${shortGitCommit} .
+                  docker tag guruvan/mazacoin-org:${shortGitCommit} guruvan/mazacoin-org:dev
+                  docker push guruvan/mazacoin-org:${shortGitCommit}
+                  docker push guruvan/mazacoin-org:dev
+                """
+              }
+            }          
       }
     }
 //    stage('Run helm') {
@@ -66,16 +74,28 @@ volumes: [
 //        sh "helm list"
 //      }
 //    }
-    stage('Run kubectl') {
-      container('kubectl') {
-      withCredentials([string(credentialsId: 'c40d0d5f-875b-4dfe-b3c0-4374606f635e', variable: 'KUBECTL_TOKEN')]) {
-        sh """
-          kubectl --token $KUBECTL_TOKEN get pods -n maza-web
-          kubectl --token $KUBECTL_TOKEN delete -f k8s/dev/mazaweb.yaml
-          kubectl --token $KUBECTL_TOKEN create -f k8s/dev/mazaweb.yaml
-          """
-      }
+    stage('Deploy Pod') {
+      switch (env.BRANCH_NAME) {
+        case "develop":
+          container('kubectl') {
+          withCredentials([string(credentialsId: 'c40d0d5f-875b-4dfe-b3c0-4374606f635e', variable: 'KUBECTL_TOKEN')]) {
+            sh """
+              kubectl --token $KUBECTL_TOKEN get pods -n maza-web
+              kubectl --token $KUBECTL_TOKEN delete -f k8s/dev/mazaweb.yaml
+              kubectl --token $KUBECTL_TOKEN create -f k8s/dev/mazaweb.yaml
+            """
+          }
+          }
+        case "master":
+          container('kubectl') {
+          withCredentials([string(credentialsId: 'c40d0d5f-875b-4dfe-b3c0-4374606f635e', variable: 'KUBECTL_TOKEN')]) {
+            sh """
+              kubectl --token $KUBECTL_TOKEN get pods -n maza-web
+              kubectl --token $KUBECTL_TOKEN delete -f k8s/dev/mazaweb.yaml
+              kubectl --token $KUBECTL_TOKEN create -f k8s/dev/mazaweb.yaml
+            """
+          }
+          }        
       }
     }
-  }
 }
