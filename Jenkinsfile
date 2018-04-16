@@ -24,6 +24,7 @@ volumes: [
           sh """
              cp -av ./ /srv/jekyll
              cd /srv/jekyll
+             chown -R jekyll.jekyll /srv/jekyll
              bundle update
              rake test
           """
