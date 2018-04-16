@@ -15,20 +15,17 @@ volumes: [
     def gitBranch = myRepo.GIT_BRANCH
     def shortGitCommit = "${gitCommit[0..10]}"
     def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
- 
+ // issue with UID/GID between containers prevents us from writing to the 
+ // workspace inside the jekyll container, so we copy the workdir over to /srv/jekyll
+ // https://issues.jenkins-ci.org/browse/JENKINS-41418
     stage('Test') {
       try {
         container('jekyll') {
           sh """
-             pwd
-             env
-             ls -la
-             # should need this but not clear why we can't update the Gemfile.lock
-             chown -R 1000.1000 /srv/jekyll
+             cp -av ./ /stv/jekyll
+             cd /srv/jekyll
              bundle update
              rake test
-             chown -R 10000.10000 /srv/jekyll
-            
           """
         }
       }
