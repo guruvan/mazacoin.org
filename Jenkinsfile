@@ -22,7 +22,7 @@ volumes: [
       try {
         container('jekyll') {
           sh """
-             cp -av ./ /stv/jekyll
+             cp -av ./ /srv/jekyll
              cd /srv/jekyll
              bundle update
              rake test
