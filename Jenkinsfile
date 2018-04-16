@@ -36,7 +36,7 @@ volumes: [
       }
     }
     stage('Deploy Docker Images to Registry') {
-      switch (env.gitBranch) {
+      switch(GIT_BRANCH) {
         case "develop":
           container('docker') {
             withCredentials([[$class: 'UsernamePasswordMultiBinding',
@@ -66,7 +66,9 @@ volumes: [
                   docker push guruvan/mazacoin-org:dev
                 """
               }
-            }          
+            }
+        default:
+          break
       }
     }
 //    stage('Run helm') {
