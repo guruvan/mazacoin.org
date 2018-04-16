@@ -1,6 +1,7 @@
 def label = "worker-${UUID.randomUUID().toString()}"
 
 podTemplate(label: label, containers: [
+  containerTemplate(name: 'jekyll', image: 'jekyll/builder', command: 'cat', ttyEnabled: true),
   containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
   containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl:v1.8.8', command: 'cat', ttyEnabled: true),
   containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:latest', command: 'cat', ttyEnabled: true)
@@ -17,14 +18,13 @@ volumes: [
  
     stage('Test') {
       try {
-        container('docker') {
+        container('jekyll') {
           sh """
              pwd
              env
              ls -la
-             docker run --rm -v `pwd`:/srv/jekyll -w /srv/jekyll jekyll/builder ls -la 
-             docker run --rm -v ${WORKSPACE}:/srv/jekyll -w /srv/jekyll jekyll/builder bundle update
-             docker run --rm -v ${WORKSPACE}:/srv/jekyll -w /srv/jekyll jekyll/builder rake test
+             bundle update
+             rake test
           """
         }
       }
