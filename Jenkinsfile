@@ -38,7 +38,7 @@ volumes: [
       }
     }
     stage('Deploy Docker Images to Registry') {
-      if (env.gitBranch == "develop" ) {
+      if ("${gitBranch} == "develop" ) {
           container('docker') {
             withCredentials([[$class: 'UsernamePasswordMultiBinding',
               credentialsId: 'dockerhub',
@@ -54,7 +54,7 @@ volumes: [
               }
           }
       }
-      if (env.gitBranch == "master" ) {
+      if ( "${gitBranch}" == "master" ) {
           container('docker') {
             withCredentials([[$class: 'UsernamePasswordMultiBinding',
               credentialsId: 'dockerhub',
