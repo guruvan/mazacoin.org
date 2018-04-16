@@ -17,12 +17,21 @@ volumes: [
  //  def git_branch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true)
     def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
  //  sh(script: "echo \"Running ${env.BUILD_ID} on ${env.JENKINS_URL}\"", returnStdout: true)
+    sh(script: "echo \"Building sha1 ${sha1}\"", returnStdout: true)
     sh(script: "echo \"Building gitBranch ${gitBranch}  commit ${gitCommit}\"", returnStdout: true)
     sh(script: "echo \"Original source for build from GHPRB: ${ghprbSourceBranch}\"", returnStdout: true)
  //  sh(script: "echo \"Building ${BRANCH_NAME} BRANCH_NAME ${env.BRANCH_NAME} commit ${gitCommit}\"",returnStdout: true)
  // issue with UID/GID between containers prevents us from writing to the 
  // workspace inside the jekyll container, so we copy the workdir over to /srv/jekyll
  // https://issues.jenkins-ci.org/browse/JENKINS-41418
+      if (ghprbSourceBranch == '') {
+         println "Not building from PR - will run deploy stage"
+        def prDetect = false
+      } else {
+        println "PR Build detected - sha1 is ${sha1}"
+         def prDetect = true
+      }
+    println "PR detected? ${prDetect}"
     stage('Test') {
     if (gitBranch == 'origin/master') { 
       try {
@@ -39,7 +48,7 @@ volumes: [
       catch (exc) {
         println "Failed to test - ${currentBuild.fullDisplayName}"
         throw(exc)
-      }
+      } 
     }
     }
     stage('Deploy Docker Images to Registry') {
