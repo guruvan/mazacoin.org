@@ -16,7 +16,7 @@ volumes: [
     def shortGitCommit = "${gitCommit[0..10]}"
     def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
     sh(script: "echo \"Running ${env.BUILD_ID} on ${env.JENKINS_URL}\"", returnStdout: true)
-    echo "Building ${env.GIT_BRANCH} commit ${gitCommit}"
+    sh(script: "echo \"Building ${env.GIT_BRANCH} commit ${gitCommit}\"",returnStdout: true)
  // issue with UID/GID between containers prevents us from writing to the 
  // workspace inside the jekyll container, so we copy the workdir over to /srv/jekyll
  // https://issues.jenkins-ci.org/browse/JENKINS-41418
@@ -39,7 +39,8 @@ volumes: [
     }
     stage('Deploy Docker Images to Registry') {
       sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-      GIT_BRANCH = 'origin/' + sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+      sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD')
+      sh(script: "echo \"Building ${env.GIT_BRANCH} commit ${gitCommit}\"",returnStdout: true)
       if (env.GIT_BRANCH == 'origin/develop') {
           container('docker') {
             withCredentials([[$class: 'UsernamePasswordMultiBinding',
