@@ -4,14 +4,17 @@ task :test do
   sh "bundle exec jekyll build"
   options = { 
     :assume_extension => true,
-    :check_html => true,
+    :check_html => true, 
+    :validation => { 
+      :report_script_embeds => false,
+      :report_invalid_tags => false,
+      :report_missing_names => false },
     :check_favicon => true,
     :url_ignore => [ 
       "/appstore/",
       "/panoramio/",
       "https://mazacoin.org/ipfs/QmeFphaDUMjMhqih5w54g5mvqKzNMibPJJ8DNehhWtaVME",
       "https://www.coingather.com/exchange/MZC/BTC" ],
-    :file_ignore => [ "/embeds/index.html" ],
     :internal_domains => [ "mazacoin.org" ],
     :allow_hash_href => true,
     :empty_alt_ignore => true }
