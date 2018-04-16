@@ -38,7 +38,7 @@ volumes: [
       }
     }
     stage('Deploy Docker Images to Registry') {
-      if ("${gitBranch}" == "develop" ) {
+      if ( env.BRANCH_NAME == 'develop' ) {
           container('docker') {
             withCredentials([[$class: 'UsernamePasswordMultiBinding',
               credentialsId: 'dockerhub',
