@@ -36,7 +36,7 @@ volumes: [
       }
     }
     stage('Deploy Docker Images to Registry') {
-      switch(GIT_BRANCH) {
+      switch(env.GIT_BRANCH) {
         case "develop":
           container('docker') {
             withCredentials([[$class: 'UsernamePasswordMultiBinding',
@@ -77,7 +77,7 @@ volumes: [
 //      }
 //    }
     stage('Deploy Pod') {
-      switch (env.gitBranch) {
+      switch(env.gitBranch) {
         case "develop":
           container('kubectl') {
           withCredentials([string(credentialsId: 'c40d0d5f-875b-4dfe-b3c0-4374606f635e', variable: 'KUBECTL_TOKEN')]) {
