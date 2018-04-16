@@ -22,7 +22,7 @@ volumes: [
              pwd
              env
              ls -la
-             docker run --rm -v ${WORKSPACE}:/srv/jekyll -w /srv/jekyll jekyll/builder ls -la 
+             docker run --rm -v `pwd`:/srv/jekyll -w /srv/jekyll jekyll/builder ls -la 
              docker run --rm -v ${WORKSPACE}:/srv/jekyll -w /srv/jekyll jekyll/builder bundle update
              docker run --rm -v ${WORKSPACE}:/srv/jekyll -w /srv/jekyll jekyll/builder rake test
           """
