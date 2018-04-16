@@ -1,7 +1,16 @@
 def label = "worker-${UUID.randomUUID().toString()}"
 
 podTemplate(label: label, containers: [
-  containerTemplate(name: 'jekyll', image: 'jekyll/builder', command: 'cat', ttyEnabled: true),
+  containerTemplate(
+    name: 'jekyll',
+    image: 'jekyll/builder',
+    command: 'cat',
+    ttyEnabled: true,
+    envVars: [
+      envVar(key: 'JEKYLL_UID', value: '10000'),
+      envVar(key: 'JEKYLL_GID', value: '10000')
+    ]),
+  ),
   containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
   containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl:v1.8.8', command: 'cat', ttyEnabled: true),
   containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:latest', command: 'cat', ttyEnabled: true)
