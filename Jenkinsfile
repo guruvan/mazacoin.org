@@ -20,6 +20,10 @@ volumes: [
     sh(script: "echo \"Building sha1 ${sha1}\"", returnStdout: true)
     sh(script: "echo \"Building gitBranch ${gitBranch}  commit ${gitCommit}\"", returnStdout: true)
     sh(script: "echo \"Original source for build from GHPRB: ${ghprbSourceBranch}\"", returnStdout: true)
+    sh 'env > env.txt' 
+for (String i : readFile('env.txt').split("\r?\n")) {
+    println i
+}
  //  sh(script: "echo \"Building ${BRANCH_NAME} BRANCH_NAME ${env.BRANCH_NAME} commit ${gitCommit}\"",returnStdout: true)
  // issue with UID/GID between containers prevents us from writing to the 
  // workspace inside the jekyll container, so we copy the workdir over to /srv/jekyll
